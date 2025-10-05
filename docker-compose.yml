@@ -19,7 +19,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 256M
+          memory: 128M
           cpus: '0.5'
 
   app:
@@ -44,7 +44,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 256M
+          memory: 128M
           cpus: '0.5'
 
 volumes:
