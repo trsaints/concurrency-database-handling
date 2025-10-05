@@ -11,16 +11,15 @@ class DatabaseConnection:
     @classmethod
     def initialize_pool(cls, minconn: int = 1, maxconn: int = 10):
         """Initialize the connection pool."""
-        if cls._connection_pool is None:
-            cls._connection_pool = ThreadedConnectionPool(
-                minconn,
-                maxconn,
-                host=settings.database_host,
-                port=settings.database_port,
-                database=settings.database_name,
-                user=settings.database_user,
-                password=settings.database_password
-            )
+        cls._connection_pool = ThreadedConnectionPool(
+            minconn,
+            maxconn,
+            host=settings.database_host,
+            port=settings.database_port,
+            database=settings.database_name,
+            user=settings.database_user,
+            password=settings.database_password
+        )
 
     @classmethod
     def close_pool(cls):
@@ -31,8 +30,7 @@ class DatabaseConnection:
     @contextmanager
     def get_connection(cls) -> Generator[pg_connection, None, None]:
         """Get a connection from the pool."""
-        if cls._connection_pool is None:
-            cls.initialize_pool()
+        cls.initialize_pool()
 
         connection = cls._connection_pool.getconn()
 
