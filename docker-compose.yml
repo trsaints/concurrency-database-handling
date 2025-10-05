@@ -23,7 +23,9 @@ services:
           cpus: '2'
 
   app:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.development
     container_name: concurrency_app
     environment:
       DATABASE_HOST: postgres
