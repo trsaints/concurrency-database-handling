@@ -102,6 +102,7 @@ FAILED test_lost_update_prevention - AssertionError: Expected 1 successful updat
 
 # Test race conditions
 
+```
 pytest app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_stock_depletion_race_condition -v -s
 
 ```
@@ -201,7 +202,7 @@ Failed updates: 1
 ✓ Thread 1: succeeded on attempt 2
 ✓ Thread 2: succeeded on attempt 1
 
-````
+```
 
 ## Key Concurrency Concepts Demonstrated
 
@@ -213,7 +214,7 @@ The application uses a `version` field to implement optimistic locking:
 UPDATE products
 SET name = %s, version = version + 1, updated_at = CURRENT_TIMESTAMP
 WHERE id = %s AND version = %s
-````
+```
 
 If the version doesn't match, the update fails, indicating another transaction modified the record.
 
