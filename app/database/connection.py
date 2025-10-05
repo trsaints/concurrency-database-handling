@@ -29,7 +29,7 @@ class DatabaseConnection:
 
     @classmethod
     @contextmanager
-    def get_connection(cls) -> Generator[pg_connection]:
+    def get_connection(cls) -> Generator[pg_connection, None, None]:
         """Get a connection from the pool."""
         if cls._connection_pool is None:
             cls.initialize_pool()
@@ -44,7 +44,7 @@ class DatabaseConnection:
 
     @classmethod
     @contextmanager
-    def get_cursor(cls, commit: bool = False) -> Generator[pg_cursor]:
+    def get_cursor(cls, commit: bool = False) -> Generator[pg_cursor, None, None]:
         """Get a cursor from a pooled connection."""
         with cls.get_connection() as connection:
             cursor = connection.cursor()
