@@ -50,19 +50,19 @@ def run_concurrency_tests():
     test_commands = [
         {
             "name": "Lost Update Prevention Test",
-            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_lost_update_prevention", "-v", "-s"]
+            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_lost_update_prevention", "-v"]
         },
         {
             "name": "Stock Depletion Race Condition Test",
-            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_stock_depletion_race_condition", "-v", "-s"]
+            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_stock_depletion_race_condition", "-v"]
         },
         {
             "name": "Optimistic Locking Retry Pattern Test",
-            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_optimistic_locking_retry_pattern", "-v", "-s"]
+            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_optimistic_locking_retry_pattern", "-v"]
         },
         {
-            "name": "High Concurrency Stress Test",
-            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_high_concurrency_stress", "-v", "-s"]
+            "name": "High Concurrency Operations Test",
+            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_high_concurrency_operations", "-v"]
         }
     ]
 

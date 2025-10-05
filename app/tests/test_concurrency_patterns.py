@@ -32,7 +32,7 @@ class TestConcurrencyPatterns:
         if created_product and created_product.id:
             ProductRepository.delete(created_product.id)
 
-    def test_lost_update_prevention(self, test_product):
+    def test_lost_update_prevention(self, test_product: Product):
         """
         Demonstrate how optimistic locking prevents lost updates.
 
@@ -96,25 +96,15 @@ class TestConcurrencyPatterns:
         thread1.join()
         thread2.join()
 
-        # Verify results
-        print("\n=== Lost Update Prevention Test Results ===")
-        print(f"Successful updates: {len(results['success'])}")
-        print(f"Failed updates: {len(results['failures'])}")
+        # Verify results - clean output focused on test validation
+        successful_updates = len(results["success"])
+        failed_updates = len(results["failures"])
 
-        for success in results["success"]:
-            print(
-                f"✓ {success['user']}: v{success['original_version']} -> v{success['new_version']}, price: ${success['price']}")
+        # Assertions with informative error messages
+        assert successful_updates == 1, f"Expected 1 successful update, got {successful_updates}"
+        assert failed_updates == 1, f"Expected 1 failed update, got {failed_updates}"
 
-        for failure in results["failures"]:
-            print(
-                f"✗ {failure['user']}: {failure.get('reason', failure.get('error'))}")
-
-        # Assertions
-        assert len(results["success"]
-                   ) == 1, "Exactly one update should succeed"
-        assert len(results["failures"]) == 1, "Exactly one update should fail"
-
-        # Verify the version was incremented
+        # Verify the version was incremented correctly
         final_product = ProductRepository.find_by_id(product_id)
         assert final_product.version == test_product.version + 1
 
@@ -303,7 +293,7 @@ class TestConcurrencyPatterns:
         create and delete operations without issues.
         """
         results = {"created": [], "deleted": [], "errors": []}
-        created_product_ids = []
+        created_product_ids: list[int] = []
         creation_lock = threading.Lock()
 
         def create_and_delete_product(thread_id: int):
@@ -362,9 +352,10 @@ class TestConcurrencyPatterns:
         # Verify cleanup - check that deleted products don't exist
         for product_id in results["deleted"]:
             product = ProductRepository.find_by_id(product_id)
+
             assert product is None, f"Product {product_id} should be deleted"
 
-    def test_optimistic_locking_retry_pattern(self, test_product):
+    def test_optimistic_locking_retry_pattern(self, test_product: Product):
         """
         Demonstrate a retry pattern for handling optimistic locking conflicts.
 
@@ -456,6 +447,7 @@ class TestConcurrencyPatterns:
         # Verify final state
         final_product = ProductRepository.find_by_id(product_id)
         expected_version = test_product.version + len(successful_updates)
+
         assert final_product.version == expected_version
 
 

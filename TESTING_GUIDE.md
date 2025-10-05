@@ -48,11 +48,14 @@ python run_tests.py --all
 Run specific test files:
 
 ```bash
-# Core concurrency patterns
-pytest app/tests/test_concurrency_patterns.py -v -s
+# Clean, focused concurrency tests (recommended)
+pytest app/tests/test_concurrency_clean.py -v
 
-# Comprehensive concurrency scenarios
-pytest app/tests/test_concurrency.py -v -s
+# Comprehensive concurrency scenarios (verbose output)
+pytest app/tests/test_concurrency.py -v
+
+# Original detailed patterns (very verbose)
+pytest app/tests/test_concurrency_patterns.py -v -s
 ```
 
 ### Run Specific Tests
@@ -60,8 +63,11 @@ pytest app/tests/test_concurrency.py -v -s
 Run individual test methods:
 
 ```bash
-# Test optimistic locking
-pytest app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_lost_update_prevention -v -s
+# Test optimistic locking (clean output)
+pytest app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_lost_update_prevention -v
+
+# Test race conditions (clean output)
+pytest app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_stock_depletion_race_condition -v
 
 # Test race conditions
 pytest app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_stock_depletion_race_condition -v -s
