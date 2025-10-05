@@ -62,17 +62,29 @@ git clone https://github.com/trsaints/concurrency-database-handling.git
 cd concurrency-database-handling
 ```
 
-2. Start the services:
+2. Create and activate the virtual environment (venv):
+    - Windows:
+```ps1
+py -m venv .venv
+source .venv/bin/Activate.ps1
+```
+    - Linux:
+```bash
+python3 -m venv .venv
+soource .venv/bin/activate
+```
+
+3. Start the services:
 ```bash
 docker-compose up -d
 ```
 
-3. The API will be available at:
+4. The API will be available at:
    - API: http://localhost:8000
    - Interactive API docs: http://localhost:8000/docs
    - Alternative docs: http://localhost:8000/redoc
 
-4. Stop the services:
+5. Stop the services:
 ```bash
 docker-compose down
 ```
