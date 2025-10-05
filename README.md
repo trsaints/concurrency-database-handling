@@ -66,7 +66,7 @@ cd concurrency-database-handling
     - Windows:
 ```ps1
 py -m venv .venv
-source .venv/bin/Activate.ps1
+.\.venv\Scripts\Activate.ps1
 ```
     - Linux:
 ```bash
