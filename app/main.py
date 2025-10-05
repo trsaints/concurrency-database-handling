@@ -1,27 +1,28 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.routes.product_routes import router as product_router
 from app.database.connection import DatabaseConnection
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for database connection handling."""
+    # Initialize database connection pool on startup
+    DatabaseConnection.initialize_pool()
+    yield
+    # Close database connection pool on shutdown
+    DatabaseConnection.close_pool()
+
+
 app = FastAPI(
     title="Concurrency Database Handling API",
     description="FastAPI application demonstrating database concurrency handling techniques",
-    version="1.0.0"
+    version="0.1.0",
+    lifespan=lifespan
 )
 
 # Include routers
 app.include_router(product_router)
-
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize database connection pool on startup."""
-    DatabaseConnection.initialize_pool()
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Close database connection pool on shutdown."""
-    DatabaseConnection.close_pool()
 
 
 @app.get("/")
