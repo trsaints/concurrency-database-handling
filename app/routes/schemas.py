@@ -27,7 +27,7 @@ class ProductResponse(BaseModel):
     version: int
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
-    
+
     class Config:
         from_attributes = True
 

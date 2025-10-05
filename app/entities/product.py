@@ -13,7 +13,7 @@ class Product:
     version: int = 0
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    
+
     @classmethod
     def from_db_row(cls, row: tuple) -> "Product":
         """Create a Product instance from a database row."""
@@ -29,7 +29,7 @@ class Product:
             created_at=row[6],
             updated_at=row[7]
         )
-    
+
     def to_dict(self) -> dict:
         """Convert Product to dictionary."""
         return {
