@@ -19,8 +19,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512M
-          cpus: '2'
+          memory: 256M
+          cpus: '1'
 
   app:
     build: 
@@ -44,8 +44,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512M
-          cpus: '2'
+          memory: 256M
+          cpus: '1'
 
 volumes:
   postgres_data:
