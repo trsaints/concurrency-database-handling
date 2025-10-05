@@ -46,23 +46,24 @@ def run_concurrency_tests():
     print("✅ Database connection successful!")
     print()
 
-    # Run specific concurrency tests
+    # Run specific concurrency tests with clean output
+    pytest_args = ["-v", "--tb=line", "--no-header", "-q"]
     test_commands = [
         {
             "name": "Lost Update Prevention Test",
-            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_lost_update_prevention", "-v"]
+            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_lost_update_prevention"] + pytest_args
         },
         {
             "name": "Stock Depletion Race Condition Test",
-            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_stock_depletion_race_condition", "-v"]
+            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_stock_depletion_race_condition"] + pytest_args
         },
         {
             "name": "Optimistic Locking Retry Pattern Test",
-            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_optimistic_locking_retry_pattern", "-v"]
+            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_optimistic_locking_retry_pattern"] + pytest_args
         },
         {
             "name": "High Concurrency Operations Test",
-            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_high_concurrency_operations", "-v"]
+            "command": ["python", "-m", "pytest", "app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_high_concurrency_operations"] + pytest_args
         }
     ]
 

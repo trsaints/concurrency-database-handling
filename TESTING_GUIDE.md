@@ -69,8 +69,41 @@ pytest app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_lost_u
 # Test race conditions (clean output)
 pytest app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_stock_depletion_race_condition -v
 
+# For more detailed failure output (if needed for debugging):
+pytest app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_lost_update_prevention -v --tb=short
+
+# For full traceback (maximum detail):
+pytest app/tests/test_concurrency_clean.py::TestConcurrencyPatterns::test_lost_update_prevention -v --tb=long
+```
+
+## Test Output Levels
+
+The tests are configured for minimal, clean output by default. You can control the amount of detail shown on failures:
+
+- **`--tb=line`** (default): Shows only the failing line
+- **`--tb=short`**: Shows a short traceback
+- **`--tb=long`**: Shows full traceback with all source code
+- **`--tb=no`**: No traceback at all, just pass/fail
+
+Example outputs:
+
+### Clean Output (default):
+
+```
+FAILED test_lost_update_prevention - AssertionError: Expected 1 successful update, got 2
+```
+
+### Verbose Output (--tb=short):
+
+```
+FAILED test_lost_update_prevention - AssertionError: Expected 1 successful update, got 2
+    assert successful_updates == 1, f"Expected 1 successful update, got {successful_updates}"
+```
+
 # Test race conditions
+
 pytest app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_stock_depletion_race_condition -v -s
+
 ```
 
 ## Understanding the Test Results
@@ -88,11 +121,13 @@ pytest app/tests/test_concurrency_patterns.py::TestConcurrencyPatterns::test_sto
 **Sample output**:
 
 ```
+
 === Lost Update Prevention Test Results ===
 Successful updates: 1
 Failed updates: 1
 ✓ Alice: v0 -> v1, price: $110.0
 ✗ Bob: Version conflict
+
 ```
 
 ### 2. Stock Depletion Race Condition Test
@@ -108,6 +143,7 @@ Failed updates: 1
 **Sample output**:
 
 ```
+
 === Stock Depletion Race Condition Test Results ===
 Total purchase attempts: 10
 Successful purchases: 5
@@ -115,6 +151,7 @@ Failed purchases: 5
 Initial stock: 5
 Total sold: 5
 Remaining stock: 0
+
 ```
 
 ### 3. High Concurrency Stress Test
@@ -130,6 +167,7 @@ Remaining stock: 0
 **Sample output**:
 
 ```
+
 === High Concurrency Stress Test Results ===
 Duration: 2.45 seconds
 Total operations attempted: 200
@@ -138,6 +176,7 @@ Successful writes: 45
 Errors: 0
 Success rate: 89.5%
 Operations per second: 81.6
+
 ```
 
 ### 4. Optimistic Locking Retry Pattern Test
@@ -153,6 +192,7 @@ Operations per second: 81.6
 **Sample output**:
 
 ```
+
 === Optimistic Locking Retry Pattern Results ===
 Total threads: 8
 Successful updates: 7
@@ -160,7 +200,8 @@ Failed updates: 1
 ✓ Thread 0: succeeded on attempt 0
 ✓ Thread 1: succeeded on attempt 2
 ✓ Thread 2: succeeded on attempt 1
-```
+
+````
 
 ## Key Concurrency Concepts Demonstrated
 
@@ -172,7 +213,7 @@ The application uses a `version` field to implement optimistic locking:
 UPDATE products
 SET name = %s, version = version + 1, updated_at = CURRENT_TIMESTAMP
 WHERE id = %s AND version = %s
-```
+````
 
 If the version doesn't match, the update fails, indicating another transaction modified the record.
 
