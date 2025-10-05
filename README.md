@@ -71,7 +71,7 @@ source .venv/bin/Activate.ps1
     - Linux:
 ```bash
 python3 -m venv .venv
-soource .venv/bin/activate
+source .venv/bin/activate
 ```
 
 3. Start the services:
