@@ -20,7 +20,7 @@ services:
       resources:
         limits:
           memory: 256M
-          cpus: '1'
+          cpus: '0.5'
 
   app:
     build: 
@@ -45,7 +45,7 @@ services:
       resources:
         limits:
           memory: 256M
-          cpus: '1'
+          cpus: '0.5'
 
 volumes:
   postgres_data:
