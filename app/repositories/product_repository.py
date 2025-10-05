@@ -1,6 +1,7 @@
 from typing import List, Optional
 from app.database.connection import DatabaseConnection
 from app.entities.product import Product
+from app.utils.sql_loader import sql_loader
 
 
 class ProductRepository:
@@ -9,11 +10,7 @@ class ProductRepository:
     @staticmethod
     def create(product: Product) -> Product:
         """Create a new product in the database."""
-        query = """
-            INSERT INTO products (name, description, price, stock_quantity)
-            VALUES (%s, %s, %s, %s)
-            RETURNING id, name, description, price, stock_quantity, version, created_at, updated_at
-        """
+        query = sql_loader.load_query('products', 'create')
         with DatabaseConnection.get_cursor(commit=True) as cursor:
             cursor.execute(query, (
                 product.name,
@@ -27,11 +24,7 @@ class ProductRepository:
     @staticmethod
     def find_by_id(product_id: int) -> Optional[Product]:
         """Find a product by ID."""
-        query = """
-            SELECT id, name, description, price, stock_quantity, version, created_at, updated_at
-            FROM products
-            WHERE id = %s
-        """
+        query = sql_loader.load_query('products', 'find_by_id')
         with DatabaseConnection.get_cursor() as cursor:
             cursor.execute(query, (product_id,))
             row = cursor.fetchone()
@@ -40,12 +33,7 @@ class ProductRepository:
     @staticmethod
     def find_all(limit: int = 100, offset: int = 0) -> List[Product]:
         """Find all products with pagination."""
-        query = """
-            SELECT id, name, description, price, stock_quantity, version, created_at, updated_at
-            FROM products
-            ORDER BY id
-            LIMIT %s OFFSET %s
-        """
+        query = sql_loader.load_query('products', 'find_all')
         with DatabaseConnection.get_cursor() as cursor:
             cursor.execute(query, (limit, offset))
             rows = cursor.fetchall()
@@ -54,13 +42,7 @@ class ProductRepository:
     @staticmethod
     def update(product: Product) -> Optional[Product]:
         """Update a product with optimistic locking."""
-        query = """
-            UPDATE products
-            SET name = %s, description = %s, price = %s, stock_quantity = %s, 
-                version = version + 1, updated_at = CURRENT_TIMESTAMP
-            WHERE id = %s AND version = %s
-            RETURNING id, name, description, price, stock_quantity, version, created_at, updated_at
-        """
+        query = sql_loader.load_query('products', 'update')
         with DatabaseConnection.get_cursor(commit=True) as cursor:
             cursor.execute(query, (
                 product.name,
@@ -76,7 +58,7 @@ class ProductRepository:
     @staticmethod
     def delete(product_id: int) -> bool:
         """Delete a product by ID."""
-        query = "DELETE FROM products WHERE id = %s"
+        query = sql_loader.load_query('products', 'delete')
         with DatabaseConnection.get_cursor(commit=True) as cursor:
             cursor.execute(query, (product_id,))
             return cursor.rowcount > 0
@@ -84,7 +66,7 @@ class ProductRepository:
     @staticmethod
     def count() -> int:
         """Count total number of products."""
-        query = "SELECT COUNT(*) FROM products"
+        query = sql_loader.load_query('products', 'count')
         with DatabaseConnection.get_cursor() as cursor:
             cursor.execute(query)
             return cursor.fetchone()[0]
