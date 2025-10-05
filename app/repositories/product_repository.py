@@ -5,7 +5,7 @@ from app.entities.product import Product
 
 class ProductRepository:
     """Repository for Product entity with raw SQL queries."""
-    
+
     @staticmethod
     def create(product: Product) -> Product:
         """Create a new product in the database."""
@@ -23,7 +23,7 @@ class ProductRepository:
             ))
             row = cursor.fetchone()
             return Product.from_db_row(row)
-    
+
     @staticmethod
     def find_by_id(product_id: int) -> Optional[Product]:
         """Find a product by ID."""
@@ -36,7 +36,7 @@ class ProductRepository:
             cursor.execute(query, (product_id,))
             row = cursor.fetchone()
             return Product.from_db_row(row) if row else None
-    
+
     @staticmethod
     def find_all(limit: int = 100, offset: int = 0) -> List[Product]:
         """Find all products with pagination."""
@@ -50,7 +50,7 @@ class ProductRepository:
             cursor.execute(query, (limit, offset))
             rows = cursor.fetchall()
             return [Product.from_db_row(row) for row in rows]
-    
+
     @staticmethod
     def update(product: Product) -> Optional[Product]:
         """Update a product with optimistic locking."""
@@ -72,7 +72,7 @@ class ProductRepository:
             ))
             row = cursor.fetchone()
             return Product.from_db_row(row) if row else None
-    
+
     @staticmethod
     def delete(product_id: int) -> bool:
         """Delete a product by ID."""
@@ -80,7 +80,7 @@ class ProductRepository:
         with DatabaseConnection.get_cursor(commit=True) as cursor:
             cursor.execute(query, (product_id,))
             return cursor.rowcount > 0
-    
+
     @staticmethod
     def count() -> int:
         """Count total number of products."""
